@@ -14,8 +14,8 @@ package org.darevay.rooscaloo.rete
  * automatically added to all parent memories as well to ensure that tests for
  * parent classes will get that object as well.
  */
-class AlphaMemory (val key : java.lang.Class[_],
-                   val parent : Option[AlphaMemory]) {
+class AlphaMemory(val key: java.lang.Class[_],
+    val parent: Option[AlphaMemory]) {
   require(key != null)
 
   // Use list buffers because items will frequently be added and removed from
@@ -23,7 +23,7 @@ class AlphaMemory (val key : java.lang.Class[_],
   private var items = List[AlphaMemoryItem]()
   private var listeners = List[AlphaMemoryListener]()
 
-  def addListener(listener : AlphaMemoryListener) {
+  def addListener(listener: AlphaMemoryListener) {
     listeners = listener :: listeners
   }
 
@@ -32,7 +32,7 @@ class AlphaMemory (val key : java.lang.Class[_],
    *
    * @param item the new item
    */
-  def add(item : AlphaMemoryItem) {
+  def add(item: AlphaMemoryItem) {
     require(item != null)
 
     //println("Activate " + this + " with " + item)
@@ -49,8 +49,8 @@ class AlphaMemory (val key : java.lang.Class[_],
    *
    * @param item the item to remove
    */
-  def remove(item : AlphaMemoryItem) {
-    items -= item
+  def remove(item: AlphaMemoryItem) {
+    items = items.filterNot { _ == item }
   }
 
   /**
@@ -58,7 +58,7 @@ class AlphaMemory (val key : java.lang.Class[_],
    *
    * @param op the operation
    */
-  def foreach(op : (AlphaMemoryItem) => Unit) {
+  def foreach(op: (AlphaMemoryItem) => Unit) {
     items.foreach(op)
   }
 

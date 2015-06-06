@@ -20,7 +20,7 @@ class AlphaMemoryItem(val fact : AnyRef) {
    * hierarchy
    */
   private val memories = new scala.collection.mutable.ArrayBuffer[AlphaMemory]()
-  private val tokens = new scala.collection.mutable.ListBuffer[Token]()
+  private var tokens = new scala.collection.mutable.ListBuffer[Token]()
 
   /**
    * The key for the item, i.e. the class of the fact
@@ -52,7 +52,7 @@ class AlphaMemoryItem(val fact : AnyRef) {
     memories.clear()
 
     while(!tokens.isEmpty)
-      tokens.first.delete()
+      tokens = tokens.filterNot { _ == tokens.head } 
   }
 
   override def toString = fact.toString

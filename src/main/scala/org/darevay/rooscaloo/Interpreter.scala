@@ -10,7 +10,8 @@ import java.io.{ StringWriter, PrintWriter }
 
 import javax.script.ScriptException;
 
-import scala.tools.nsc.InterpreterResults._
+
+import scala.tools.nsc.interpreter.Results._
 //import scala.tools.nsc.{Interpreter => ScalaInterpreter, Settings}
 import scala.tools.nsc._
 import scala.tools.nsc.interpreter._

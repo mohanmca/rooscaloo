@@ -81,7 +81,9 @@ class Rete extends Matcher {
    * @see Matcher#removeFact(AnyRef)
    */
   def removeFact(fact : AnyRef) : AnyRef = {
-    factMap.removeKey(fact).foreach(_ remove)
+    //factMap.removeKey(fact).foreach(_ remove)
+    factMap.get(fact).map { x =>  x.remove()}
+    factMap -= fact
     fact
   }
 

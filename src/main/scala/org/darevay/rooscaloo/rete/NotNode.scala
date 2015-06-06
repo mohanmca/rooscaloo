@@ -17,7 +17,7 @@ class NotNode(val parent : BetaMemory,
               val bottomOfSubnet : BetaMemory)
   extends ConditionNode with BetaMemoryChild {
 
-  private val tokenMap = scala.collection.mutable.Map.empty[Token, Token]
+  private var tokenMap = scala.collection.mutable.Map.empty[Token, Token]
   private var childMemoryImpl : BetaMemory = null
   
   parent.addChildToBack(this)
@@ -57,7 +57,7 @@ class NotNode(val parent : BetaMemory,
     // If a token is removed from the left, then we only need to remove it
     // from the map. We really only care if a token is removed from the bottom
     // of the subnet
-    tokenMap.removeKey(token)
+    tokenMap -= token
   }
 
   /**
@@ -82,7 +82,10 @@ class NotNode(val parent : BetaMemory,
     
     // Retrieve the token previously added to the token map and delete it. This
     // will cause cascading retractions in sub-nodes...
-    tokenMap.removeKey(ca).foreach(_ delete)
+    tokenMap.get(ca).map { x =>  x.delete()}
+    tokenMap -= ca
+    
+    
   }
 
   private def tokenRemovedFromSubnet(token : Token) {
