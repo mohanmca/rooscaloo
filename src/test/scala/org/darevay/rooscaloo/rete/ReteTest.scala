@@ -65,7 +65,7 @@ class ReteTest {
     val rule = Rule("testAddRuleWithNoNegations", List(), (MatchContext) => (), None)
     rete.addRule(rule)
     assertEquals(1, rete.rootBetaMemory.children.size)
-    val pnode = rete.rootBetaMemory.children.first.asInstanceOf[RuleNode]
+    val pnode = rete.rootBetaMemory.children.head.asInstanceOf[RuleNode]
     assertNotNull(pnode)
     assertSame(rete.rootBetaMemory, pnode.parent)
   }
@@ -79,7 +79,7 @@ class ReteTest {
                     (MatchContext) => (), None)
     rete.addRule(rule)
     assertEquals(1, rete.rootBetaMemory.children.size)
-    val join = rete.rootBetaMemory.children.first.asInstanceOf[ObjectConditionNode]
+    val join = rete.rootBetaMemory.children.head.asInstanceOf[ObjectConditionNode]
     assertSame(rete.rootBetaMemory, join.parent)
 
     val am = rete.getAlphaMemory(classOf[String])
@@ -88,7 +88,7 @@ class ReteTest {
     val subJoin = join.childMemory
     assertEquals(1, subJoin.children.size)
 
-    val pnode = subJoin.children.first.asInstanceOf[RuleNode]
+    val pnode = subJoin.children.head.asInstanceOf[RuleNode]
     assertSame(subJoin, pnode.parent)
   }
 
