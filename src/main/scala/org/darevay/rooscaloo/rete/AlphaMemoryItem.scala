@@ -52,7 +52,7 @@ class AlphaMemoryItem(val fact : AnyRef) {
     memories.clear()
 
     while(!tokens.isEmpty)
-      tokens = tokens.filterNot { _ == tokens.head } 
+      tokens.head.delete() 
   }
 
   override def toString = fact.toString

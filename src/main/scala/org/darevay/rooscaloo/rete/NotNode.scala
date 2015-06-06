@@ -80,12 +80,12 @@ class NotNode(val parent : BetaMemory,
     val ca = commonAncestor(token)
     assert(ca != null)
     
+    //tokenMap.removeKey(ca).foreach(_ delete)
     // Retrieve the token previously added to the token map and delete it. This
     // will cause cascading retractions in sub-nodes...
-    tokenMap.get(ca).map { x =>  x.delete()}
+    val oldToken = tokenMap.get(ca)
     tokenMap -= ca
-    
-    
+    oldToken.map { x =>  x.delete()}
   }
 
   private def tokenRemovedFromSubnet(token : Token) {
