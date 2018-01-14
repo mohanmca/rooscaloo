@@ -10,13 +10,12 @@ import java.io.{ StringWriter, PrintWriter }
 
 import javax.script.ScriptException;
 
-
 import scala.tools.nsc.interpreter.Results._
 //import scala.tools.nsc.{Interpreter => ScalaInterpreter, Settings}
 import scala.tools.nsc._
 import scala.tools.nsc.interpreter._
 
-class ResultHolder(var value : Any)
+class ResultHolder(var value: Any)
 
 class Interpreter {
   // http://lampsvn.epfl.ch/trac/scala/ticket/874
@@ -28,12 +27,13 @@ class Interpreter {
   // cf http://stackoverflow.com/questions/4121567/embedded-scala-repl-inherits-parent-classpath
   lazy val urls = java.lang.Thread.currentThread.getContextClassLoader match {
     case cl: java.net.URLClassLoader => cl.getURLs.toList
-    case _ => error("classloader is not a URLClassLoader")
+    case _                           => throw new RuntimeException("classloader is not a URLClassLoader")
   }
-  
+
   lazy val classpath = urls map { _.toString }
   val settings = new Settings()
-  
+  settings.usejavacp.value = true
+  settings.deprecation.value = true
   // The above code gets you the classpath in current context.
   settings.classpath.value = classpath.distinct.mkString(java.io.File.pathSeparator)
 
@@ -45,17 +45,17 @@ class Interpreter {
    * @param name the variable name
    * @param value the value
    */
-  def bind(name : String, value : AnyRef) {
+  def bind(name: String, value: AnyRef) {
     interpreter.bind(name, value.getClass.getName, value)
   }
 
   /**
    * Execute a string of Scala code and ignore its result.
    *
-   * @param code the code to execute 
+   * @param code the code to execute
    * @throws ScriptException if the code fails to parse
    */
-  def exec(code : String) {
+  def exec(code: String) {
     // Clear the previous output buffer
     writer.getBuffer.setLength(0)
 
@@ -64,8 +64,8 @@ class Interpreter {
 
     // Return value or throw an exception based on result
     ir match {
-      case Success => ()
-      case Error => throw new ScriptException("error in: '" + code + "'\n" + writer toString)
+      case Success    => ()
+      case Error      => throw new ScriptException("error in: '" + code + "'\n" + writer toString)
       case Incomplete => throw new ScriptException("incomplete in :'" + code + "'\n" + writer toString)
     }
   }
@@ -78,7 +78,7 @@ class Interpreter {
    * @return the result
    * @throws ScriptException if the code fails to parse
    */
-  def eval(code : String) : Any = {
+  def eval(code: String): Any = {
     //println("-------\n" + code)
     // Clear the previous output buffer
     writer.getBuffer.setLength(0)
@@ -92,8 +92,8 @@ class Interpreter {
 
     // Return value or throw an exception based on result
     ir match {
-      case Success => holder.value
-      case Error => throw new ScriptException("error in: '" + code + "'\n" + writer toString)
+      case Success    => holder.value
+      case Error      => throw new ScriptException("error in: '" + code + "'\n" + writer toString)
       case Incomplete => throw new ScriptException("incomplete in :'" + code + "'\n" + writer toString)
     }
   }

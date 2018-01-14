@@ -16,16 +16,11 @@ object Util {
     am.get.getParameterTypes()(0)
   }
 
-  implicit def optionToToSet[T](o: Option[T]) = {
-    case class Impl() {
-      def toSet: Set[T] = {
-        o match {
-          case Some(some) => Set(some)
-          case None => Set()
-        }
-      }
+  implicit def optionToToSet[T](o: Option[T]): Set[T] = {
+    o match {
+      case Some(some) => Set(some)
+      case None       => Set()
     }
-    new Impl
   }
 
   /**
